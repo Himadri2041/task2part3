@@ -21,8 +21,8 @@ class Question {
   }
 }
 
-Future<List<Question>> fetchQuestions() async {
-  const url = 'https://opentdb.com/api.php?amount=10';
+Future<List<Question>> fetchQuestions(int numberOfQuestions) async {
+  const url = 'https://opentdb.com/api.php?amount=10&category=20&difficulty=medium&type=multiple';
   final response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {
     List<dynamic> data = json.decode(response.body)['results'];

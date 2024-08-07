@@ -4,6 +4,19 @@ import 'dart:async';
 import 'que.dart';
 
 
+class TriviaQuizApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Trivia Quiz',
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+      ),
+      home: QuizPage(),
+    );
+  }
+}
+
 class QuizPage extends StatefulWidget {
   @override
   _QuizPageState createState() => _QuizPageState();
@@ -16,10 +29,12 @@ class _QuizPageState extends State<QuizPage> {
   int remainingTime = 10; // Time in seconds for each question
   Timer? timer;
 
+  static const int numberOfQuestions = 10; // Set the number of questions
+
   @override
   void initState() {
     super.initState();
-    futureQuestions = fetchQuestions();
+    futureQuestions = fetchQuestions(numberOfQuestions);
     _loadScore();
     _startTimer();
   }
@@ -70,8 +85,12 @@ class _QuizPageState extends State<QuizPage> {
                 onPressed: () {
                   Navigator.of(context).pop();
                   setState(() {
-                    currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
-                    _startTimer();
+                    if (currentQuestionIndex + 1 < numberOfQuestions) {
+                      currentQuestionIndex++;
+                      _startTimer();
+                    } else {
+                      _showCompletionDialog();
+                    }
                   });
                 },
               ),
@@ -107,8 +126,12 @@ class _QuizPageState extends State<QuizPage> {
                 onPressed: () {
                   Navigator.of(context).pop();
                   setState(() {
-                    currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
-                    _startTimer();
+                    if (currentQuestionIndex + 1 < numberOfQuestions) {
+                      currentQuestionIndex++;
+                      _startTimer();
+                    } else {
+                      _showCompletionDialog();
+                    }
                   });
                 },
               ),
@@ -117,6 +140,34 @@ class _QuizPageState extends State<QuizPage> {
         },
       );
     });
+  }
+
+  void _showCompletionDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Quiz Completed"),
+          content: Text("Your final score is: $score",
+          ),
+          actions: [
+            TextButton(
+              child: Text("Restart"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  currentQuestionIndex = 0;
+                  score = 0;
+                  _saveScore();
+                  futureQuestions = fetchQuestions(numberOfQuestions);
+                  _startTimer();
+                });
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -152,12 +203,15 @@ class _QuizPageState extends State<QuizPage> {
                   ),
                   SizedBox(height: 20.0),
                   ...questions[currentQuestionIndex].choices.map((choice) {
+                    
                     return ElevatedButton(
+                    
                       onPressed: () => _answerQuestion(choice),
+                      
                       child: Text(choice),
                     );
                   }).toList(),
-                  SizedBox(height: 20.0),
+                  SizedBox(height: 30.0),
                   Text(
                     'Score: $score',
                     style: TextStyle(fontSize: 20.0),
@@ -177,138 +231,3 @@ class _QuizPageState extends State<QuizPage> {
     super.dispose();
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

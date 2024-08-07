@@ -11,7 +11,7 @@ class TriviaQuizApp extends StatelessWidget {
     return MaterialApp(
       title: 'Trivia Quiz',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
       ),
       home: mainpage(),
     );
@@ -22,12 +22,21 @@ class mainpage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color.fromARGB(46, 255, 255, 255),
       body:Column(
+      
       children: <Widget>[
+        Text('QUIZ',
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+        fontSize: 30,
+      ),),
+      SizedBox(height:20),
   Align(
     alignment: Alignment.bottomCenter,
-    child: Image.asset(
+    child:
+    Image.asset(
       'lib/images/1st.png',
      
     ),
@@ -49,7 +58,9 @@ MaterialButton(
       ),
     );
   },
-  child: Icon(Icons.arrow_forward),), ],
+  child: Icon(Icons.arrow_forward),
+  height: 20,
+  minWidth: 20,), ],
  ),
     );
   }
